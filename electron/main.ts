@@ -6,8 +6,12 @@ import { execSync } from 'node:child_process'
 import https from 'node:https'
 import fs from 'node:fs'
 import si from 'systeminformation'
+import dotenv from 'dotenv'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
+
+// Load .env from project root
+dotenv.config({ path: path.join(__dirname, '..', '.env') })
 
 process.env.APP_ROOT = path.join(__dirname, '..')
 
@@ -533,12 +537,19 @@ ipcMain.handle('open-windows-tool', (_event, tool: string) => {
 })
 
 // Update system - check GitHub releases
-const GITHUB_REPO = 'anomalyco/zynvault'
+const GITHUB_REPO = 'joaodev575/-anomalyco-zynvault'
 const CURRENT_VERSION = app.getVersion()
 
 function httpsGet(url: string): Promise<string> {
   return new Promise((resolve, reject) => {
-    https.get(url, { headers: { 'User-Agent': 'ZynVault-Updater' } }, (res) => {
+    const options: import('https').RequestOptions = {
+      headers: { 'User-Agent': 'ZynVault-Updater' },
+    }
+    const token = process.env.GITHUB_TOKEN
+    if (token) {
+      options.headers = { ...options.headers, Authorization: `token ${token}` }
+    }
+    https.get(url, options, (res) => {
       let data = ''
       res.on('data', chunk => data += chunk)
       res.on('end', () => resolve(data))
