@@ -28,8 +28,8 @@ export default function LoadingScreen({
   return (
     <div className="flex flex-col items-center justify-center flex-1" style={{ background: 'var(--zx-bg-0)' }}>
       <div className="flex flex-col items-center gap-5 animate-zx-fade-in">
-        <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-[var(--zx-radius-3)]" style={{ background: 'var(--zx-bg-2)', border: '1px solid var(--zx-brand-border)', boxShadow: '0 0 20px rgba(37, 99, 235, 0.25)' }}>
-          <img src="/logo-1.png" alt="Zyntrix" style={{ width: 40, height: 40 }} onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }} />
+        <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-[var(--zx-radius-3)]" style={{ background: 'var(--zx-bg-2)', border: '1px solid var(--zx-brand-border)', boxShadow: '0 0 12px rgba(37, 99, 235, 0.2)' }}>
+          <img src="/logo-1.png" alt="Zyntrix" style={{ width: 28, height: 28 }} onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }} />
         </div>
         <div className="flex flex-col items-center gap-1">
           <span style={{ fontSize: 'var(--zx-text-xl)', fontWeight: 'var(--zx-weight-semibold)', color: 'var(--zx-text-1)', letterSpacing: '-0.02em' }}>

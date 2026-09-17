@@ -31,8 +31,8 @@ export function TitleBar({ currentPage }: TitleBarProps) {
           borderBottom: '1px solid var(--zx-border-2)',
         }}
       >
-        <div className="flex items-center gap-2.5 pl-3 zx-no-drag">
-          <img src="/logo-1.png" alt="" style={{ width: 22, height: 22, borderRadius: 4, boxShadow: '0 0 8px rgba(37, 99, 235, 0.35)' }} onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }} />
+        <div className="flex items-center gap-2 pl-3 zx-no-drag">
+          <img src="/logo-1.png" alt="" style={{ width: 16, height: 16, borderRadius: 3, boxShadow: '0 0 5px rgba(37, 99, 235, 0.25)' }} onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }} />
           <span style={{ fontSize: 'var(--zx-text-sm)', fontWeight: 'var(--zx-weight-bold)', color: 'var(--zx-text-1)', letterSpacing: '-0.01em' }}>
             Zyntrix
           </span>

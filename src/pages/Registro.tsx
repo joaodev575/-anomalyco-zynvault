@@ -34,8 +34,8 @@ export default function Registro({ onNavigate, onRegister, isLoading = false }: 
     <div className="relative flex min-h-0 flex-1 items-center justify-center h-screen overflow-hidden px-4 py-8" style={{ background: 'var(--zx-bg-0)' }}>
       <div className="relative z-10 w-full max-w-[360px]">
         <div className="mb-8 flex flex-col items-center gap-4">
-          <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-[var(--zx-radius-3)]" style={{ background: 'var(--zx-bg-2)', border: '1px solid var(--zx-brand-border)', boxShadow: '0 0 20px rgba(37, 99, 235, 0.25)' }}>
-            <img src="/logo-1.png" alt="Zyntrix" className="h-10 w-10 object-contain" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }} />
+          <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-[var(--zx-radius-3)]" style={{ background: 'var(--zx-bg-2)', border: '1px solid var(--zx-brand-border)', boxShadow: '0 0 12px rgba(37, 99, 235, 0.2)' }}>
+            <img src="/logo-1.png" alt="Zyntrix" className="h-7 w-7 object-contain" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }} />
           </div>
           <div className="flex flex-col items-center gap-1">
             <h1 style={{ fontSize: 'var(--zx-text-xl)', fontWeight: 'var(--zx-weight-semibold)', color: 'var(--zx-text-1)', letterSpacing: '-0.02em' }}>Zyntrix</h1>

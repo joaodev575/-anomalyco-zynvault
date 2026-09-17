@@ -31,9 +31,9 @@ export function Sidebar({ activeNavItem, onNavigate, user, onLogout }: SidebarPr
   return (
     <aside className="flex flex-col h-full select-none" style={{ width: 'var(--zx-sidebar-width)', minWidth: 'var(--zx-sidebar-width)', background: 'var(--zx-bg-1)', borderRight: '1px solid var(--zx-border-2)' }}>
       {/* Logo */}
-      <div className="flex items-center gap-3 px-4" style={{ height: 'var(--zx-topbar-height)', borderBottom: '1px solid var(--zx-border-1)' }}>
-        <img src="/logo-1.png" alt="" style={{ width: 26, height: 26, borderRadius: 5, boxShadow: '0 0 10px rgba(37, 99, 235, 0.4)' }} onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }} />
-        <span style={{ fontSize: 'var(--zx-text-lg)', fontWeight: 'var(--zx-weight-bold)', color: 'var(--zx-text-1)', letterSpacing: '-0.02em' }}>Zyntrix</span>
+      <div className="flex items-center gap-2 px-4" style={{ height: 'var(--zx-topbar-height)', borderBottom: '1px solid var(--zx-border-1)' }}>
+        <img src="/logo-1.png" alt="" style={{ width: 20, height: 20, borderRadius: 4, boxShadow: '0 0 6px rgba(37, 99, 235, 0.3)' }} onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }} />
+        <span style={{ fontSize: 'var(--zx-text-sm)', fontWeight: 'var(--zx-weight-bold)', color: 'var(--zx-text-1)', letterSpacing: '-0.02em' }}>Zyntrix</span>
       </div>
 
       {/* Nav */}
