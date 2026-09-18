@@ -1,7 +1,7 @@
 {
   "name": "zynvault",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "app": "npx electron .",
@@ -45,6 +45,8 @@
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
+    "png-to-ico": "^3.0.2",
+    "png2icons": "^2.0.1",
     "postcss": "^8.5.28",
     "tailwindcss": "^4.3.3",
     "typescript": "^5.2.2",

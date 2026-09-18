@@ -9,9 +9,14 @@ lerna-debug.log*
 
 node_modules
 dist
+dist-electron
 dist-ssr
 *.local
 release
+server/dist
+server/node_modules
+server/.env
+*.db
 
 # Environment files
 .env

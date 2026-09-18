@@ -2,7 +2,7 @@ import { app, BrowserWindow, ipcMain, shell, Notification } from 'electron'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 import os from 'node:os'
-import { execSync } from 'node:child_process'
+import { execSync, fork } from 'node:child_process'
 import https from 'node:https'
 import fs from 'node:fs'
 import si from 'systeminformation'
@@ -10,8 +10,52 @@ import dotenv from 'dotenv'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
-// Load .env from project root
-dotenv.config({ path: path.join(__dirname, '..', '.env') })
+const isDev = !app.isPackaged
+
+// Load .env - dev: project root, prod: resources folder
+if (isDev) {
+  dotenv.config({ path: path.join(__dirname, '..', '.env') })
+} else {
+  dotenv.config({ path: path.join(process.resourcesPath, 'server', '.env') })
+}
+
+// Start API server
+let serverProcess: import('child_process').ChildProcess | null = null
+
+function startServer() {
+  let serverPath: string
+  let serverCwd: string
+  if (isDev) {
+    serverPath = path.join(__dirname, '..', 'server', 'dist', 'index.js')
+    serverCwd = path.join(__dirname, '..', 'server')
+  } else {
+    serverPath = path.join(process.resourcesPath, 'server', 'dist', 'index.js')
+    serverCwd = path.join(process.resourcesPath, 'server')
+  }
+  if (!fs.existsSync(serverPath)) {
+    console.warn('Server not found at', serverPath)
+    return
+  }
+  serverProcess = fork(serverPath, [], {
+    cwd: serverCwd,
+    env: { ...process.env },
+    silent: true,
+  })
+  serverProcess.on('error', (err) => {
+    console.error('Server error:', err)
+  })
+  serverProcess.on('exit', (code) => {
+    console.log('Server exited with code', code)
+    serverProcess = null
+  })
+}
+
+function stopServer() {
+  if (serverProcess) {
+    serverProcess.kill()
+    serverProcess = null
+  }
+}
 
 process.env.APP_ROOT = path.join(__dirname, '..')
 
@@ -105,7 +149,7 @@ function createWindow() {
   win = new BrowserWindow({
     icon: './src/assets/icon-app.png' as unknown as Electron.NativeImage,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.mjs'),
+      preload: path.join(__dirname, 'preload.cjs'),
       contextIsolation: true,
       nodeIntegration: false,
     },
@@ -733,4 +777,12 @@ app.on('activate', () => {
   }
 })
 
-app.whenReady().then(createWindow)
+app.on('before-quit', () => {
+  stopServer()
+})
+
+app.whenReady().then(() => {
+  startServer()
+  // Wait a moment for server to start
+  setTimeout(createWindow, 1500)
+})

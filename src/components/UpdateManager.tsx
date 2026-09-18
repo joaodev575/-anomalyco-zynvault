@@ -30,6 +30,7 @@ export function UpdateManager({ currentVersion }: { currentVersion: string }) {
   const [info, setInfo] = useState<UpdateInfo | null>(null)
   const [progress, setProgress] = useState(0)
   const [error, setError] = useState('')
+  const [downloadedPath, setDownloadedPath] = useState('')
 
   useEffect(() => {
     const handler = (...args: unknown[]) => {
@@ -72,6 +73,7 @@ export function UpdateManager({ currentVersion }: { currentVersion: string }) {
       const result = await window.zynvaultAPI.downloadUpdate(info.assets[0].url)
       if (result.success && result.filePath) {
         setStatus('downloaded')
+        setDownloadedPath(result.filePath)
         setProgress(100)
       } else {
         setStatus('error')
@@ -83,10 +85,10 @@ export function UpdateManager({ currentVersion }: { currentVersion: string }) {
     }
   }, [info])
 
-  const installUpdate = useCallback(async (filePath: string) => {
-    if (!window.zynvaultAPI) return
+  const installUpdate = useCallback(async () => {
+    if (!window.zynvaultAPI || !downloadedPath) return
     try {
-      const result = await window.zynvaultAPI.installUpdate(filePath)
+      const result = await window.zynvaultAPI.installUpdate(downloadedPath)
       if (result.success) {
         setError(result.message)
       } else {
@@ -97,7 +99,7 @@ export function UpdateManager({ currentVersion }: { currentVersion: string }) {
       setStatus('error')
       setError('Falha ao instalar')
     }
-  }, [])
+  }, [downloadedPath])
 
   const exeAsset = info?.assets.find(a => a.name.endsWith('.exe'))
   const installerAsset = exeAsset || info?.assets[0]
@@ -177,14 +179,14 @@ export function UpdateManager({ currentVersion }: { currentVersion: string }) {
         </div>
       )}
 
-      {status === 'downloaded' && installerAsset && (
+      {status === 'downloaded' && (
         <div className="space-y-2">
           <div className="flex items-center gap-2 rounded-[var(--zx-radius-2)] border border-[var(--zx-success-border)] bg-[var(--zx-success-muted)] px-2.5 py-2">
             <Check size={11} className="text-[var(--zx-success)]" />
             <span className="text-[10px] font-medium text-[var(--zx-success)]">Download concluido</span>
           </div>
           <button
-            onClick={() => installUpdate(installerAsset.url)}
+            onClick={installUpdate}
             className="flex w-full items-center justify-center gap-1.5 rounded-[var(--zx-radius-2)] bg-[var(--zx-success)] px-3 py-2 text-[10px] font-semibold text-white hover:opacity-90 transition-all"
           >
             <ExternalLink size={10} />

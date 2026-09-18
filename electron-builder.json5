@@ -11,6 +11,28 @@
     "dist",
     "dist-electron"
   ],
+  "extraResources": [
+    {
+      "from": "server/dist",
+      "to": "server/dist"
+    },
+    {
+      "from": "server/node_modules",
+      "to": "server/node_modules"
+    },
+    {
+      "from": "server/prisma",
+      "to": "server/prisma"
+    },
+    {
+      "from": "server/.env",
+      "to": "server/.env"
+    },
+    {
+      "from": ".env",
+      "to": ".env"
+    }
+  ],
   "mac": {
     "target": [
       "dmg"
@@ -26,13 +48,19 @@
         ]
       }
     ],
-    "artifactName": "${productName}-Windows-${version}-Setup.${ext}"
+    "icon": "build/icon.ico",
+    "artifactName": "${productName}-Windows-${version}-Setup.${ext}",
+    "signAndEditExecutable": false
   },
   "nsis": {
     "oneClick": false,
     "perMachine": false,
     "allowToChangeInstallationDirectory": true,
-    "deleteAppDataOnUninstall": false
+    "deleteAppDataOnUninstall": false,
+    "installerIcon": "build/icon.ico",
+    "uninstallerIcon": "build/icon.ico",
+    "installerHeaderIcon": "build/icon.ico",
+    "language": "1046"
   },
   "linux": {
     "target": [
