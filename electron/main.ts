@@ -1,5 +1,4 @@
 import { app, BrowserWindow, ipcMain, shell, Notification } from 'electron'
-import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 import os from 'node:os'
 import { execSync, fork } from 'node:child_process'
@@ -8,7 +7,7 @@ import fs from 'node:fs'
 import si from 'systeminformation'
 import dotenv from 'dotenv'
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
+declare const __dirname: string
 
 const isDev = !app.isPackaged
 
@@ -146,8 +145,12 @@ function executeCommand(command: string): { success: boolean; message: string } 
 }
 
 function createWindow() {
+  const iconPath = isDev
+    ? path.join(__dirname, '..', 'public', 'icon-app.png')
+    : path.join(process.resourcesPath, 'dist', 'icon-app.png')
+
   win = new BrowserWindow({
-    icon: './src/assets/icon-app.png' as unknown as Electron.NativeImage,
+    icon: iconPath,
     webPreferences: {
       preload: path.join(__dirname, 'preload.cjs'),
       contextIsolation: true,

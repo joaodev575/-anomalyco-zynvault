@@ -11,18 +11,29 @@ export default defineConfig({
     tailwindcss(),
     electron({
       main: {
-        // Shortcut of `build.lib.entry`.
         entry: 'electron/main.ts',
+        vite: {
+          build: {
+            lib: {
+              entry: 'electron/main.ts',
+              formats: ['cjs'],
+              fileName: () => '[name].cjs',
+            },
+            rollupOptions: {
+              output: {
+                entryFileNames: '[name].cjs',
+              },
+            },
+          },
+        },
       },
       preload: {
-        // Shortcut of `build.rollupOptions.input`.
-        // Preload scripts may contain Web assets, so use the `build.rollupOptions.input` instead `build.lib.entry`.
         input: path.join(__dirname, 'electron/preload.ts'),
         vite: {
           build: {
             rollupOptions: {
               output: {
-                // Force .cjs extension for preload (CJS format required by Electron sandbox)
+                format: 'cjs',
                 entryFileNames: '[name].cjs',
                 chunkFileNames: '[name].cjs',
               },
@@ -30,11 +41,7 @@ export default defineConfig({
           },
         },
       },
-      // Ployfill the Electron and Node.js API for Renderer process.
-      // If you want use Node.js in Renderer process, the `nodeIntegration` needs to be enabled in the Main process.
-      // See 👉 https://github.com/electron-vite/vite-plugin-electron-renderer/issues/78#issuecomment-2053600808
       renderer: process.env.NODE_ENV === 'test'
-        // https://github.com/electron-vite/vite-plugin-electron-renderer/issues/78#issuecomment-2053600808
         ? undefined
         : {},
     }),
